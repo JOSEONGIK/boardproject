@@ -7,17 +7,17 @@ import org.jj.domain.PageParam;
 
 public interface BoardMapper {
 
-	public List<Board> getList();
+	public List<Board> getList(PageParam pageParam);
 	
-	public Board get(int bno); 
+	public Board get(PageParam pageParam); 
 	
 	public int insert(Board board);
 	
-	public int delete(int bno);
+	public int delete(PageParam pageParam);
 	
 	public int modify(Board board);
+
+	public List<Board> getlistPaging(PageParam pageParam);
 	
-	public List<Board> getlistPage(PageParam param);
-	
-	
+	public int getTotalCount(PageParam pageParam);
 }

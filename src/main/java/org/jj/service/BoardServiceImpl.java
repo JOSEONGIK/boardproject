@@ -3,6 +3,7 @@ package org.jj.service;
 import java.util.List;
 
 import org.jj.domain.Board;
+import org.jj.domain.PageParam;
 import org.jj.mapper.BoardMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +15,12 @@ public class BoardServiceImpl implements BoardService {
 
 	private BoardMapper mapper;
 	
-	@Override
-	public List<Board> getList() {
-		// TODO Auto-generated method stub
-		return mapper.getList();
-	}
+
 
 	@Override
-	public int remove(int bno) {
+	public int remove(PageParam pageParam) {
 		// TODO Auto-generated method stub
-		return mapper.delete(bno);
+		return mapper.delete(pageParam);
 	}
 
 	@Override
@@ -33,15 +30,27 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board read(int bno) {
+	public Board read(PageParam pageParam) {
 		// TODO Auto-generated method stub
-		return mapper.get(bno);
+		return mapper.get(pageParam);
 	}
 
 	@Override
 	public int write(Board board) {
 		// TODO Auto-generated method stub
 		return mapper.insert(board);
+	}
+
+	@Override
+	public int getTotalCount(PageParam pageParam) {
+		// TODO Auto-generated method stub
+		return mapper.getTotalCount(pageParam);
+	}
+
+	@Override
+	public List<Board> getList(PageParam pageParam) {
+		// TODO Auto-generated method stub
+		return mapper.getList(pageParam);
 	}
 
 }

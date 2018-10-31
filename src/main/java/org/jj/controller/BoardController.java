@@ -3,6 +3,7 @@ package org.jj.controller;
 import java.util.List;
 
 import org.jj.domain.Board;
+import org.jj.domain.PageParam;
 import org.jj.service.BoardService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mysql.cj.log.Log;
-
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -33,47 +33,47 @@ public class BoardController {
 	private BoardService service;
 	
 	@GetMapping("/list")
-	public void getList(Model model){
+	public void getList(@ModelAttribute("pageObj") PageParam pageParam, Model model){
 		
-		model.addAttribute("list",service.getList());	
+		pageParam.setTotal(service.getTotalCount(pageParam));
+		model.addAttribute("list", service.getList(pageParam));
 	}
 	
 	@GetMapping("/register")
-	public void register() {
+	public void register(@ModelAttribute("pageObj") PageParam pageParam) {
 	}
 	
 	@PostMapping("/register")
-	public String registerPost(Board board, RedirectAttributes rttr) {
+	public String registerPost(PageParam pageParam, Board board, RedirectAttributes rttr) {
 		
 		int result=service.write(board);
-		List<Board> list = service.getList();
-		rttr.addFlashAttribute("board",list.get(0));
 		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED");
-		return "redirect:/board/list";
+		return pageParam.getLink("redirect:/board/list");
 	}
 	
 	@GetMapping({"/read","/modify"})
-	public void get(@RequestParam("bno") Integer bno, Model model) {
+	public void get(@ModelAttribute("pageObj") PageParam pageParam, Model model) {
 		
-		model.addAttribute("board", service.read(bno));
+		model.addAttribute("board", service.read(pageParam));
 	}
 	
 	@PostMapping("/modify")
-	public String modifyPost(Board board, RedirectAttributes rttr) {
+	public String modifyPost(PageParam pageParam, Board board, RedirectAttributes rttr) {
 		int result = service.modify(board);
 		rttr.addFlashAttribute("result", result==1?"SUCCESS":"FAILED");
-		return "redirect:/board/read?bno="+ board.getBno();
+		return pageParam.getLink("redirect:/board/read");
 		
 	}
 	
 	@PostMapping("/remove")
-	public String removePost(@RequestParam("bno") Integer bno, RedirectAttributes rttr) {
+	public String removePost(@ModelAttribute("pageObj") PageParam pageParam, RedirectAttributes rttr) {
 		
-		int result = service.remove(bno);
+		int result = service.remove(pageParam);
 		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED"); //모달창을 띄우기 위한 코드
 		
-		return "redirect:/board/list";
+		return pageParam.getLink("redirect:/board/list");
 	}
-		
+
+	
 
 }

@@ -23,10 +23,5 @@ public class TimeMapperTests extends AbstractTests{
 		log.info(timemapper.getTime());
 	}
 	
-	@Test
-	public void getListTest() {
-		 
-		log.info(boardMapper.getList());
-	}
 
 }

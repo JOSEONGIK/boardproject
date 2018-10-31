@@ -6,7 +6,7 @@
 
 <!-- row -->
 <div class="row tm-content-row tm-mt-big">
-
+	${pageMaker}
 	<div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-col">
 		<div class="bg-white tm-block h-100">
 			<div class="row">
@@ -39,7 +39,8 @@
 								<th scope="row"><input type="checkbox"
 									aria-label="Checkbox"></th>
 								<td class="text-center"><c:out value="${board.bno}"></c:out></td>
-								<td><a href="/board/read?bno=${board.bno}" class='board'><c:out value="${board.title}" /></a></td>
+								<td><a href="/board/read?bno=${board.bno}" class='board'><c:out
+											value="${board.title}" /></a></td>
 								<td class="text-center"><c:out value="${board.writer}"></c:out></td>
 								<td class="text-center">0</td>
 								<td class="text-center"><fmt:formatDate
@@ -52,34 +53,34 @@
 					</tbody>
 				</table>
 			</div>
+		
+		<div class="tm-table-actions-col-right">
+			<span class="tm-pagination-label">Page</span>
+			<nav aria-label="Page navigation" class="d-inline-block">
+				<ul class="pagination tm-pagination">
+					<c:if test="${pageObj.prev}">
+						<li class="page-item active"><a class="page-link"
+							href="{pageObj.start-1}">Prev</a></li>
+					</c:if>
 
-			<div class="tm-table-mt tm-table-actions-row">
-				<div class="tm-table-actions-col-left">
-					<button class="btn btn-danger">Delete Selected Items</button>
-				</div>
-				<div class="tm-table-actions-col-right">
-					<span class="tm-pagination-label"></span>
-					<nav aria-label="Page navigation" class="d-inline-block">
-						<%--    <ul class="pagination tm-pagination">
-                        <c:if test ="${pageObj.prev}">
-                        <li class="page-item active"><a class="page-link" href="${pageObj.start-1}}">Prev</a></li>
-                        </c:if>
-                        
-                        <c:forEach begin="${pageObj.start}" end="{pageObj.end}" var="num">
-                        <li class="page-item" data-page='${num}'><a class="page-link"  href="${num}"><c:out value="${num}"></c:out></a></li>
-                        </c:forEach>
-                        
-                        <c:if test="${pageObj.next}">
-                        <li class="page-item"><a class="page-link" href="${pageObj.end+1}">Next</a></li>
-                        </c:if>
-                  
-                     </ul> --%>
-					</nav>
-				</div>
-			</div>
+					<c:forEach begin="${pageObj.start}" end="${pageObj.end}" var="num">
+
+						<li class="page-item" data-page='${num}'><a class="page-link"
+							href="${num}"><c:out value="${num}" /></a></li>
+					</c:forEach>
+					<c:if test="${pageObj.next}">
+						<li class="page-item"><a class="page-link"
+							href="${pageObj.end+1}">Next</a></li>
+					</c:if>
+				</ul>
+			</nav>
 		</div>
+		</div>
+		
 	</div>
 </div>
+
+
 <!-- /.panel-body -->
 <!-- /.panel -->
 <!-- Modal -->
@@ -94,7 +95,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-			
+
 		</div>
 		<!-- /.modal-content -->
 	</div>
@@ -132,22 +133,22 @@ $(document).ready(function(){
 		
 		self.location = "/board/register"
 	})
-});
 
-   /* $(document).ready(function(){
+
+
       
       var actionForm = $("#actionForm");
       var pageNum = ${pageObj.page};
       
    $('.pagination tm-pagination li[data-page ='+pageNum+']').addClass("active");
       
-   $('.pagination li a').on("click",function(e){
+   $('.page-link').on("click",function(e){
          
          e.preventDefault(); //기본동작을 막아버림... 눌려도 아무변화가 없다.
          var target = $(this).attr("href");
          console.log(target);
          $("#page").val(target);
          actionForm.attr("action","/board/list").attr("method","get").submit();
-      
-   }); */
+   }
+   }); 
 </script>
