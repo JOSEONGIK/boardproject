@@ -57,26 +57,28 @@ form {
 							name="content" value='${board.content}' readonly="readonly"
 							data-large-mode="true">
 					</div>
-
-					<div class="form-group">
-						<div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-							<button>
-								<a href="/board/modify?bno=<c:out value="${board.bno}"/>" class="btn btn-default">MODIFY</a>
-							</button>
-						</div>
-
-
-						<div class="form-group">
-							<div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-								<button data-oper='list' class="btn btn-info">List</button>
-							</div>
-
-
-						</div>
 				</form>
+
+				<div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
+					<form role="form" action="/board/modify" method="get">
+						<input type="hidden" name="page" value="${pageObj.page}">
+						<input type="hidden" name="bno" value="${board.bno}">
+						<button type='submit' class="btn btn-default">MODIFY</button>
+					</form>
+
+					<form role="form" action="/board/list" method="get">
+						<input type="hidden" name="page" value="${pageObj.page}">
+						<input type="hidden" name="keyword" id="keyword" value="${pageObj.keyword}" >
+  						 <input type="hidden" name="type" id ="type" value="${pageObj.type}">
+  						 <input type="hidden" name="total" id ="total" value="${pageObj.total}">
+						<button type='submit' class="btn btn-default">List</button>
+					</form>
+				</div>
 			</div>
+
 		</div>
 	</div>
+</div>
 </div>
 
 <!-- /.panel-body -->
@@ -93,7 +95,7 @@ form {
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-			
+
 		</div>
 		<!-- /.modal-content -->
 	</div>
@@ -103,30 +105,44 @@ form {
 
 <%@include file="../includes/footer.jsp"%>
 
+<script type="text/javascript" src="/resources/js/reply.js"></script>
 
 <script type="text/javascript">
-
-
 $(document).ready(function(){
+    
+	$(document).ready(function(){
+		
+		var actionForm = $("#actionForm");
+		
+		$("button[btn-default='modify']").on("click", function(e){
+			
+			actionForm.attr("action", "/board/modify").submit();
+		})
+		
+	})
 	
-	var result = '<c:out value="${result}"/>';
-	checkModal(result);
-	history.replaceState({}, null, null);
 
-	
-	function checkModal(result){
-		if(result === '' || history.state){
-			return	
-		}
-		
-		if(result === 'SUCCESS'){
-			$(".modal-body").html("게시글" + ${board.bno} + " 번이 수정되었습니다.");
-		}
-		$("#myModal").modal("show");
-	}
-	$("#regBtn").on("click", function(){
-		
-		self.location = "/board/register"
+	   var result = '<c:out value="${result}"/>';
+	   var msg = $("#myModal");
+	         
+	   checkModal(result);
+	   history.replaceState({},null,null);
+	         
+	   function checkModal(result){
+	            
+	      if(result === '' || history.state){
+	       return;   
+	      }
+	            
+	      if (result === 'SUCCESS') {
+	         $(".modal-body").html("작업성공!");
+	         msg.modal('show');
+	            
+	      }
+	   }
+	   
+	   
+	       
 	});
-});
+	//수정해야함 token이 안맞아서 모달창이 안뜸
 </script>

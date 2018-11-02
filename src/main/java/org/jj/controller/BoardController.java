@@ -1,7 +1,5 @@
 package org.jj.controller;
 
-import java.util.List;
-
 import org.jj.domain.Board;
 import org.jj.domain.PageParam;
 import org.jj.service.BoardService;
@@ -15,10 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -37,6 +33,7 @@ public class BoardController {
 		
 		pageParam.setTotal(service.getTotalCount(pageParam));
 		model.addAttribute("list", service.getList(pageParam));
+
 	}
 	
 	@GetMapping("/register")
@@ -52,7 +49,7 @@ public class BoardController {
 	}
 	
 	@GetMapping({"/read","/modify"})
-	public void get(@ModelAttribute("pageObj") PageParam pageParam, Model model) {
+	public void get(@ModelAttribute("pageObj") PageParam pageParam ,Model model) {
 		
 		model.addAttribute("board", service.read(pageParam));
 	}

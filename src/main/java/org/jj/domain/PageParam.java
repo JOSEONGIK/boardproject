@@ -13,6 +13,19 @@ public class PageParam {
 	private int bno;
 	private int total,start,end;
 	private boolean prev,next;
+	private String keyword, type;
+	private String[] types;
+	
+	public void setType(String type) {
+		this.type = type;
+		
+		this.types = this.type.split("");
+		
+		if(this.type.length() == 0 || this.type == null) {
+			this.types = null;
+		}
+		
+	}
 	
 	public PageParam() {
 		this.page=1;
@@ -26,13 +39,15 @@ public class PageParam {
 		this.end=(int)(Math.ceil(this.page/PER))*10;
 		this.start =this.end-9;
 		
-		if((this.end *10) >=total){
-			this.end=(int)(Math.ceil(total/10.0));
+		if(this.display * this.end >=total){
+			this.end=(int)Math.ceil(this.total/(double)this.display);
 			this.next=false;
 		}else {
 			this.next=true;
 		}
-		this.prev = this.start!=1;
+		if(this.start ==1) {
+		this.prev = false;
+		}else {this.prev = true;}
 	}
 	public int getSkip() {
 		return (this.page-1)*10;
@@ -44,16 +59,19 @@ public class PageParam {
 //		return builder.toUriString();
 		
 		return UriComponentsBuilder.fromPath(path)
-		.queryParam("bno", this.bno)
+		.queryParam("bno", this.bno)		
 		.queryParam("page", this.page)
+		.queryParam("total", this.total)
+		.queryParam("keyword", this.keyword)
+		.queryParam("type", this.type)
+		.queryParam("display", this.display)
 		.toUriString();
 	}
 	
-	public static void manin(String[] args) {
-		PageParam obj = new PageParam();
-		
-		obj.setBno(123);
-		obj.setPage(3);
-		System.out.println(obj.getLink("redirect/board/read"));
+	public static void main(String[] args) {
+		PageParam pageParam = new PageParam();
+		pageParam.setKeyword("깨지게");
+		pageParam.setType("tcw");
+		System.out.println(pageParam.getLink("redirect/board/read"));
 	}
 }

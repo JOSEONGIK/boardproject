@@ -3,10 +3,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../includes/header.jsp"%>
-
+<style>
+.form-horizontal {
+	width: 100%;
+	margin: 0 auto;
+	justify-content: flex-end;
+}
+}
+</style>
 <!-- row -->
 <div class="row tm-content-row tm-mt-big">
-	${pageMaker}
 	<div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-col">
 		<div class="bg-white tm-block h-100">
 			<div class="row">
@@ -17,6 +23,7 @@
 				<div class="col-md-4 col-sm-12 text-right">
 					<a href="/board/register" class="btn btn-small btn-primary">Register</a>
 				</div>
+
 			</div>
 			<div class="table-responsive">
 				<table
@@ -39,7 +46,7 @@
 								<th scope="row"><input type="checkbox"
 									aria-label="Checkbox"></th>
 								<td class="text-center"><c:out value="${board.bno}"></c:out></td>
-								<td><a href="/board/read?bno=${board.bno}" class='board'><c:out
+								<td><a href="${board.bno}" class='board'> <c:out
 											value="${board.title}" /></a></td>
 								<td class="text-center"><c:out value="${board.writer}"></c:out></td>
 								<td class="text-center">0</td>
@@ -53,32 +60,53 @@
 					</tbody>
 				</table>
 			</div>
-		
-		<div class="tm-table-actions-col-right">
-			<span class="tm-pagination-label">Page</span>
-			<nav aria-label="Page navigation" class="d-inline-block">
-				<ul class="pagination tm-pagination">
-					<c:if test="${pageObj.prev}">
-						<li class="page-item active"><a class="page-link"
-							href="{pageObj.start-1}">Prev</a></li>
-					</c:if>
 
-					<c:forEach begin="${pageObj.start}" end="${pageObj.end}" var="num">
+			<div class="tm-table-actions-col-right">
 
-						<li class="page-item" data-page='${num}'><a class="page-link"
-							href="${num}"><c:out value="${num}" /></a></li>
-					</c:forEach>
-					<c:if test="${pageObj.next}">
-						<li class="page-item"><a class="page-link"
-							href="${pageObj.end+1}">Next</a></li>
-					</c:if>
-				</ul>
-			</nav>
+				<span class="tm-pagination-label">Page</span>
+				<nav aria-label="Page navigation" class="d-inline-block">
+					<ul class="pagination tm-pagination">
+						<c:if test="${pageObj.prev}">
+							<li class="page-item active"><a href="${pageObj.start-1}" class="page-link" >Prev</a></li>
+						</c:if>
+
+						<c:forEach var="num" begin="${pageObj.start}" end="${pageObj.end}">
+
+							<li class="page-item" data-page='${num}'><a
+								class="page-link" href="${num}"><c:out value="${num}" /></a></li>
+						</c:forEach>
+						<c:if test="${pageObj.next}">
+							<li class="page-item"><a class="page-link"
+								href="${pageObj.end+1}">Next</a></li>
+						</c:if>
+					</ul>
+				</nav>
+
+				<div class="panel-body">
+					<div class="table-responsive">
+						<form id='searchForm' class='form-horizontal'>
+							<select name="type">
+                  <option <c:out value="${pageObj.type == null?'selected':'' }"/>>--</option>
+                  <option value="t"<c:out value="${pageObj.type == 't'?'selected':'' }"/>>제목</option>
+                  <option value="c"<c:out value="${pageObj.type == 'c'?'selected':'' }"/>>내용</option>
+                  <option value="w"<c:out value="${pageObj.type == 'w'?'selected':'' }"/>>작성자</option>
+                  <option value="tc"<c:out value="${pageObj.type == 'tc'?'selected':'' }"/>>제목+내용</option>
+                  <option value="tcw"<c:out value="${pageObj.type == 'tcw'?'selected':'' }"/>>제목+내용+작성자</option>
+							</select> <input type="text" name="keyword" value="${pageObj.keyword}"/>
+							<input type='hidden' name='page' value="${pageObj.page}"/>
+							<input type='hidden' name='total' value="${pageObj.total}"/>
+							<button id="searchBtn">SEARCH</button>
+						</form>
+
+					</div>
+				</div>
+
+			</div>
 		</div>
-		</div>
-		
+
 	</div>
 </div>
+
 
 
 <!-- /.panel-body -->
@@ -104,51 +132,94 @@
 <!-- /.modal -->
 
 
-<form id="actionForm">
+<form id="actionForm" action="/board/list" method="get">
 	<input type="hidden" name="page" id="page" value="${pageObj.page}">
+	<input type="hidden" name="keyword" id="keyword" value="${pageObj.keyword}" >
+   <input type="hidden" name="type" id ="type" value="${pageObj.type}">
+      <input type="hidden" name="total" id ="total" value="${pageObj.total}">
 </form>
 <%@include file="../includes/footer.jsp"%>
 
+
 <script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						
+						 $("#searchBtn").on("click",function(e){
+						      
+						      var searchTypeValue =$("select[name='type'] option:selected").val();
+						      
+						      var searchKeyword = $("input[name='keyword']").val();
+						      console.log(searchKeyword);
+						      if(searchKeyword.trim().length == 0){
+						         
+						         alert("검색어없음");
+						         
+						         return;
+						      }
+						      
+						      actionForm.attr("action","/board/list");
+						      $("#keyword").val(searchKeyword);
+						      actionForm.find("input[name='type']").val(searchTypeValue);
+						      $("#page").val(1);
+						      
+						      actionForm.submit();
+						      
+						   });
 
 
-$(document).ready(function(){
-	
-	var result = '<c:out value="${result}"/>';
-	checkModal(result);
-	history.replaceState({}, null, null);
+						var result = '<c:out value="${result}"/>';
+						checkModal(result);
+						history.replaceState({}, null, null);
 
-	
-	function checkModal(result){
-		if(result === '' || history.state){
-			return	
-		}
-		
-		if(result === 'SUCCESS'){
-			$(".modal-body").html("작업이 완료되었습니다.");
-		}
-		$("#myModal").modal("show");
-	}
-	$("#regBtn").on("click", function(){
-		
-		self.location = "/board/register"
-	})
+						function checkModal(result) {
+							if (result === '' || history.state) {
+								return;	}
 
+							if (result === 'SUCCESS') {
+								$(".modal-body").html("작업이 완료되었습니다.");
+							}
+							$("#myModal").modal("show");
+						}
+						$("#regBtn").on("click", function() {
 
+							self.location = "/board/register"
+						})
 
-      
-      var actionForm = $("#actionForm");
-      var pageNum = ${pageObj.page};
-      
-   $('.pagination tm-pagination li[data-page ='+pageNum+']').addClass("active");
-      
-   $('.page-link').on("click",function(e){
-         
-         e.preventDefault(); //기본동작을 막아버림... 눌려도 아무변화가 없다.
-         var target = $(this).attr("href");
-         console.log(target);
-         $("#page").val(target);
-         actionForm.attr("action","/board/list").attr("method","get").submit();
-   }
-   }); 
+						var actionForm = $("#actionForm");
+						var pageNum = ${pageObj.page};
+
+						$(".board")
+								.on(
+										"click",
+										function(e) {
+
+											e.preventDefault();
+
+											var bno = $(this).attr("href");
+											actionForm
+													.append("<input type='hidden' name='bno' value='"+bno+"'>");
+											actionForm.attr("action",
+													"/board/read").attr(
+													"method", "get").submit();
+
+										});//중요..이걸로 링크연결함
+
+						$(
+								'.pagination tm-pagination li[data-page ='
+										+ pageNum + ']').addClass("active");
+
+						$('.page-link').on(
+								"click",
+								function(e) {
+
+									e.preventDefault();
+									var target = $(this).attr("href");
+									console.log(target);
+									$("#page").val(target);
+									actionForm.attr("action", "/board/list")
+											.attr("method", "get").submit();
+								})
+					});
 </script>

@@ -21,7 +21,12 @@ form {
 
 			<div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12">
 				<form role="form" action="/board/modify" method="post">
-
+						<input type="hidden" name="page" value="${pageObj.page}">
+						<input type="hidden" name="keyword" id="keyword" value="${pageObj.keyword}" >
+  						 <input type="hidden" name="type" id ="type" value="${pageObj.type}">
+  						 <input type="hidden" name="total" id ="total" value="${pageObj.total}">
+  						 
+  						
 					<div class="form-group">
 						<label class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">
 							Bno </label> <input
