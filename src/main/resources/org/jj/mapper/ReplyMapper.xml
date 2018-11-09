@@ -8,7 +8,7 @@
 select * from tbl_reply
 where bno=#{bno}
 order by rno
-</select>
+</select> 
 
 <insert id="write">
 insert into tbl_reply(bno, reply, replyer) values(#{bno}, #{reply}, #{replyer})
@@ -34,20 +34,20 @@ where rno = #{rno}
 select * from tbl_reply where rno = #{rno}
 </select>
 
-<select id="getList" resultType="org.jj.domain.Board">
+<!-- <select id="getList" resultType="org.jj.domain.Board">
 select *
 from
 tbl_reply
 where bno > (select max(bno)-10000 from tbl_reply)
 order by bno desc
 limit ${skip}, #{display}
-</select>
+</select> -->
 	
 	<select id="countReply" resultType="int">
 	select count(bno) from tbl_reply where bno = #{bno}
 	</select> 
 
-<select id="listPaging">
+<select id="getListWithPaging">
 select rno,bno,reply,replyer,regdate,updatedate from tbl_reply
 where rno= #{rno}
 order by rno
