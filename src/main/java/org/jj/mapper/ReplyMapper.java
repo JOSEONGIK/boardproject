@@ -18,8 +18,8 @@ public interface ReplyMapper {
 	
 	public ReplyVO read(Integer rno);
 	
-	public List<ReplyVO> getListWithPaging(
-			@Param("pageParam") PageParam pageParam,
-			@Param("bno") Integer bno);
+	public List<ReplyVO> getListPage( PageParam pageParam);
+	
+	public int getCountByBno(Integer bno);
 			
 }

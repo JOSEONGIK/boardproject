@@ -47,11 +47,15 @@ limit ${skip}, #{display}
 	select count(bno) from tbl_reply where bno = #{bno}
 	</select> 
 
-<select id="getListWithPaging">
+<select id="getListPage" resultType="org.jj.domain.ReplyVO">
 select rno,bno,reply,replyer,regdate,updatedate from tbl_reply
-where rno= #{rno}
-order by rno
+where bno = #{bno} and rno>0
 limit #{skip}, #{display}
+
+</select>
+
+<select id="getCountByBno" resultType="integer">
+select count(rno) from tbl_reply where bno = #{bno}
 </select>
 
 </mapper>

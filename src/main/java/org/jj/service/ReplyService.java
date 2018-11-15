@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jj.domain.PageParam;
 import org.jj.domain.ReplyVO;
+import org.jj.domain.ReplypageDTO;
 
 public interface ReplyService {
 
@@ -16,4 +17,6 @@ public interface ReplyService {
 	public int remove(Integer rno);
 	
 	public List<ReplyVO> getList(PageParam pageParam, Integer bno);
+	
+	public ReplypageDTO  getListPage(PageParam pageParam);
 }

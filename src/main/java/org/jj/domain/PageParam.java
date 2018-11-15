@@ -50,6 +50,10 @@ public class PageParam {
 		}else {this.prev = true;}
 	}
 	public int getSkip() {
+		
+		if(this.page==-1) {
+			this.page=1;
+		}
 		return (this.page-1)*10;
 		
 	}

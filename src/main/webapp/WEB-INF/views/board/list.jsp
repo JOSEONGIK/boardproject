@@ -47,7 +47,7 @@
 									aria-label="Checkbox"></th>
 								<td class="text-center"><c:out value="${board.bno}"></c:out></td>
 								<td><a href="${board.bno}" class='board'> <c:out
-											value="${board.title}" /></a></td>
+											value="${board.title}"/> <b>[ <c:out value="${board.replycnt}" />]</b></a></td>
 								<td class="text-center"><c:out value="${board.writer}"></c:out></td>
 								<td class="text-center">0</td>
 								<td class="text-center"><fmt:formatDate

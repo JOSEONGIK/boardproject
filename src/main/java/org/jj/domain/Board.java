@@ -14,4 +14,6 @@ public class Board {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date updatedate, regdate;
 	
+	private int replycnt;
+	
 }

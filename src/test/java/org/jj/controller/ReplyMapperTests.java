@@ -1,5 +1,7 @@
 package org.jj.controller;
 
+import java.util.List;
+
 import org.jj.domain.PageParam;
 import org.jj.domain.ReplyVO;
 import org.jj.mapper.ReplyMapper;
@@ -40,5 +42,14 @@ public class ReplyMapperTests extends AbstractTests{
 		
 		mapper.write(vo);
 		
+	}
+	
+	@Test
+	public void testList2() {
+		
+		PageParam param = new PageParam();
+		
+//		List<ReplyVO> replies = mapper.getListPage(param, 150);
+//		replies.forEach(reply -> log.info(reply));
 	}
 }
