@@ -189,7 +189,7 @@ public class UploadController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 				
-		String resourceName = resource.getFilename();
+		String resourceOriginalName = resource.getFilename();
 		
 		HttpHeaders headers = new HttpHeaders();
 		try {
@@ -201,7 +201,7 @@ public class UploadController {
 				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8").replaceAll("\\+"," ");
 			}else if(userAgent.contains("Edge")) {
 				log.info("Edge browser");
-				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8")
+				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8");
 				
 			}else {
 				
